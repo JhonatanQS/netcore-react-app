@@ -1,5 +1,6 @@
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Activities.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,9 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 });
 
 builder.Services.AddCors();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
+builder.Services.AddAutoMapper(typeof(Application.Core.MappingProfiles).Assembly);
 var app = builder.Build(); 
 app.UseCors(x=> x.AllowAnyHeader()
                 .AllowAnyMethod()
